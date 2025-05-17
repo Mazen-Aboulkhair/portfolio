@@ -5,19 +5,19 @@ import Task from '@/models/Task';
 // Route segment config
 export const dynamic = 'force-dynamic';
 
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
-
 // GET handler
-export async function GET(
-  request: NextRequest,
-  context: RouteParams
-) {
+export async function GET(request: NextRequest) {
   try {
-    const { id } = context.params;
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Task ID is required' },
+        { status: 400 }
+      );
+    }
+
     await connectToDatabase();
     const task = await Task.findById(id);
     
@@ -39,12 +39,18 @@ export async function GET(
 }
 
 // PUT handler
-export async function PUT(
-  request: NextRequest,
-  context: RouteParams
-) {
+export async function PUT(request: NextRequest) {
   try {
-    const { id } = context.params;
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Task ID is required' },
+        { status: 400 }
+      );
+    }
+
     const body = await request.json();
     await connectToDatabase();
     
@@ -71,12 +77,18 @@ export async function PUT(
 }
 
 // DELETE handler
-export async function DELETE(
-  request: NextRequest,
-  context: RouteParams
-) {
+export async function DELETE(request: NextRequest) {
   try {
-    const { id } = context.params;
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Task ID is required' },
+        { status: 400 }
+      );
+    }
+
     await connectToDatabase();
     const task = await Task.findByIdAndDelete(id);
     
