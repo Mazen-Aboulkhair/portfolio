@@ -13,6 +13,7 @@ interface OrderUpdate {
   status?: string;
   paymentStatus?: string;
   trackingNumber?: string;
+  [key: string]: string | undefined;  // Add index signature
 }
 
 interface ProductDocument {
@@ -175,13 +176,15 @@ export async function PUT(request: NextRequest) {
     }
 
     const updates = await request.json();
-    const allowedUpdates = ['status', 'paymentStatus', 'trackingNumber'];
+    const allowedUpdates = ['status', 'paymentStatus', 'trackingNumber'] as const;
+    type AllowedUpdateKey = typeof allowedUpdates[number];
+    
     const filteredUpdates = Object.keys(updates)
-      .filter(key => allowedUpdates.includes(key))
-      .reduce((obj, key) => {
+      .filter((key): key is AllowedUpdateKey => allowedUpdates.includes(key as AllowedUpdateKey))
+      .reduce<OrderUpdate>((obj, key) => {
         obj[key] = updates[key];
         return obj;
-      }, {} as OrderUpdate);
+      }, {});
 
     if (Object.keys(filteredUpdates).length === 0) {
       return NextResponse.json(

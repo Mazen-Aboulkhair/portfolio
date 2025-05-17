@@ -3,8 +3,13 @@ import connectToDatabase from '@/lib/mongodb';
 import Cart from '@/models/Cart';
 import Product from '@/models/Product';
 
+interface CartItem {
+  product: string;
+  quantity: number;
+}
+
 // Helper function to calculate cart total
-async function calculateCartTotal(items: { product: string; quantity: number }[]) {
+async function calculateCartTotal(items: CartItem[]) {
   const productIds = items.map(item => item.product);
   const products = await Product.find({ _id: { $in: productIds } });
   
@@ -88,7 +93,7 @@ export async function POST(request: NextRequest) {
 
     // Update cart items
     const existingItemIndex = cart.items.findIndex(
-      item => item.product.toString() === productId
+      (item: CartItem) => item.product.toString() === productId
     );
 
     if (existingItemIndex > -1) {
@@ -142,7 +147,7 @@ export async function DELETE(request: NextRequest) {
     if (productId) {
       // Remove specific product
       cart.items = cart.items.filter(
-        item => item.product.toString() !== productId
+        (item: CartItem) => item.product.toString() !== productId
       );
     } else {
       // Clear entire cart

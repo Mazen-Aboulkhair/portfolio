@@ -16,6 +16,7 @@ const CartSchema = new Schema<ICart>(
       type: String,
       required: [true, 'Please provide user information'],
       unique: true,
+      index: true,
     },
     items: [{
       product: {
@@ -43,9 +44,6 @@ const CartSchema = new Schema<ICart>(
   },
   { timestamps: true }
 );
-
-// Create index for better query performance
-CartSchema.index({ user: 1 });
 
 // Middleware to update lastUpdated timestamp
 CartSchema.pre('save', function(next) {

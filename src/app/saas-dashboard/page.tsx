@@ -80,25 +80,24 @@ export default function SaaSDashboard() {
       setLoading(true);
       setError(null);
 
-      const [analyticsRes, usersRes, summaryRes] = await Promise.all([
+      const [analyticsRes, usersRes] = await Promise.all([
         fetch(`/api/saas/analytics?period=${period}`),
-        fetch('/api/saas/users'),
-        fetch(`/api/saas/summary?period=${period}`)
+        fetch('/api/saas/users')
       ]);
 
-      if (!analyticsRes.ok || !usersRes.ok || !summaryRes.ok) {
+      if (!analyticsRes.ok || !usersRes.ok) {
         throw new Error('Failed to fetch dashboard data');
       }
 
-      const [analyticsData, usersData, summaryData] = await Promise.all([
+      const [analyticsData, usersData] = await Promise.all([
         analyticsRes.json(),
-        usersRes.json(),
-        summaryRes.json()
+        usersRes.json()
       ]);
 
-      setAnalytics(analyticsData);
+      // Update to handle the new response structure
+      setAnalytics(analyticsData.analytics || []);
+      setSummary(analyticsData.summary || null);
       setUsers(usersData);
-      setSummary(summaryData);
     } catch (err) {
       setError('Failed to load dashboard data');
       console.error(err);
