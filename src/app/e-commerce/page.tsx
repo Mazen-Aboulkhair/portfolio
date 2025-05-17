@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FaShoppingCart, 
@@ -73,17 +73,12 @@ export default function ECommerce() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [cart, setCart] = useState<Cart>({ items: [], totalAmount: 0 });
-  const [showCart, setShowCart] = useState(false);
-  const [filters, setFilters] = useState({
-    category: '',
-    search: '',
-    minPrice: '',
-    maxPrice: '',
-    sort: '-createdAt'
-  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'name'>('name');
   const [showFilters, setShowFilters] = useState(false);
   const [seeding, setSeeding] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [expandedFilters, setExpandedFilters] = useState<Record<FilterSection, boolean>>({
     category: true,
@@ -92,6 +87,13 @@ export default function ECommerce() {
   });
   const [wishlist, setWishlist] = useState<string[]>([]);
   const debouncedSearch = useDebounce(searchQuery, 300);
+  const [filters, setFilters] = useState({
+    category: '',
+    search: '',
+    minPrice: '',
+    maxPrice: '',
+    sort: '-createdAt'
+  });
 
   // Update filters when search changes
   useEffect(() => {
@@ -353,7 +355,7 @@ export default function ECommerce() {
           <div className="flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
               E-Commerce Store
-            </Link>
+        </Link>
             <div className="flex items-center space-x-4">
               {/* Search Bar */}
               <div className="hidden md:block relative">
@@ -365,8 +367,8 @@ export default function ECommerce() {
                   className="w-64 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-
+      </div>
+      
               {/* Mobile Filter Button */}
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
@@ -391,7 +393,7 @@ export default function ECommerce() {
 
               {/* Cart Button */}
               <button
-                onClick={() => setShowCart(!showCart)}
+                onClick={() => setIsCartOpen(!isCartOpen)}
                 className="relative p-2 text-gray-600 hover:text-gray-900"
               >
                 <FaShoppingCart className="w-5 h-5" />
@@ -404,7 +406,7 @@ export default function ECommerce() {
                     {cart.items.length}
                   </motion.span>
                 )}
-              </button>
+            </button>
             </div>
           </div>
 
@@ -437,8 +439,8 @@ export default function ECommerce() {
                 >
                   Clear All
                 </button>
-              </div>
-
+      </div>
+      
               {/* Category Filter */}
               <div className="mb-6">
                 <button
@@ -493,16 +495,16 @@ export default function ECommerce() {
                         placeholder="Min"
                       />
                     </div>
-                    <div>
+                <div>
                       <label className="block text-sm text-gray-600 mb-1">Max Price</label>
-                      <input
+                  <input 
                         type="number"
                         value={filters.maxPrice}
                         onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Max"
-                      />
-                    </div>
+                  />
+                </div>
                   </div>
                 )}
               </div>
@@ -541,7 +543,7 @@ export default function ECommerce() {
                         </span>
                       </label>
                     ))}
-                  </div>
+                </div>
                 )}
               </div>
             </div>
@@ -565,8 +567,8 @@ export default function ECommerce() {
                   </option>
                 ))}
               </select>
-            </div>
-
+        </div>
+        
             {/* Product Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               <AnimatePresence>
@@ -605,7 +607,7 @@ export default function ECommerce() {
                           <FaRegHeart className="w-5 h-5 text-gray-600" />
                         )}
                       </button>
-                    </div>
+                </div>
                     <div className="p-5">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 min-h-[3rem]">
                         {product.name}
@@ -615,8 +617,8 @@ export default function ECommerce() {
                           <FaStar className="text-yellow-400 w-5 h-5" />
                           <span className="ml-1 text-sm text-gray-600">
                             {product.rating} ({product.reviews} reviews)
-                          </span>
-                        </div>
+                    </span>
+                  </div>
                       </div>
                       <div className="flex flex-col space-y-3">
                         <div className="flex items-center justify-between">
@@ -635,8 +637,8 @@ export default function ECommerce() {
                                 ${product.price.toFixed(2)}
                               </span>
                             )}
-                          </div>
-                        </div>
+                    </div>
+                  </div>
                         <button
                           onClick={() => addToCart(product._id)}
                           disabled={product.stock === 0}
@@ -647,16 +649,16 @@ export default function ECommerce() {
                           }`}
                         >
                           {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-                        </button>
+                  </button>
                         {product.stock > 0 && product.stock <= 5 && (
                           <p className="text-sm text-orange-500 text-center">
                             Only {product.stock} left in stock!
                           </p>
                         )}
-                      </div>
-                    </div>
+                </div>
+              </div>
                   </motion.div>
-                ))}
+            ))}
               </AnimatePresence>
             </div>
           </div>
@@ -665,7 +667,7 @@ export default function ECommerce() {
 
       {/* Cart Sidebar */}
       <AnimatePresence>
-        {showCart && (
+        {isCartOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -683,7 +685,7 @@ export default function ECommerce() {
                 <div className="flex items-center justify-between p-4 border-b">
                   <h2 className="text-xl font-bold">Shopping Cart</h2>
                   <button
-                    onClick={() => setShowCart(false)}
+                    onClick={() => setIsCartOpen(false)}
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
                     <FaTimes className="w-5 h-5" />
@@ -696,7 +698,7 @@ export default function ECommerce() {
                       <FaShoppingCart className="w-16 h-16 mb-4" />
                       <p className="text-lg">Your cart is empty</p>
                       <button
-                        onClick={() => setShowCart(false)}
+                        onClick={() => setIsCartOpen(false)}
                         className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
                       >
                         Continue Shopping

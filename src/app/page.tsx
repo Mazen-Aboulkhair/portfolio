@@ -4,18 +4,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  FaGithub, 
-  FaLinkedin, 
-  FaTwitter, 
-  FaEnvelope,
-  FaCode,
-  FaServer,
-  FaMobile,
-  FaDatabase,
-  FaTools,
-  FaRocket
-} from 'react-icons/fa';
+import { FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import { SiTypescript, SiJavascript, SiReact, SiNodedotjs, SiMongodb, SiTailwindcss } from 'react-icons/si';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -32,11 +22,31 @@ const staggerContainer = {
 };
 
 const skills = [
-  { icon: FaCode, name: 'Frontend Development', description: 'React, Next.js, TypeScript, Tailwind CSS' },
-  { icon: FaServer, name: 'Backend Development', description: 'Node.js, Express, Python, Django' },
-  { icon: FaDatabase, name: 'Database', description: 'MongoDB, SQL' },
-  { icon: FaTools, name: 'DevOps', description: 'Docker, AWS, CI/CD, Git' },
-  { icon: FaRocket, name: 'Other Skills', description: 'REST APIs, GraphQL, WebSocket' }
+  {
+    name: 'Frontend Development',
+    description: 'Building responsive and interactive user interfaces with React, Next.js, and modern CSS frameworks.',
+    icon: SiReact,
+  },
+  {
+    name: 'Backend Development',
+    description: 'Node.js, Express, Python, Django',
+    icon: SiNodedotjs,
+  },
+  {
+    name: 'Database',
+    description: 'MongoDB, SQL',
+    icon: SiMongodb,
+  },
+  {
+    name: 'DevOps',
+    description: 'Docker, AWS, CI/CD, Git',
+    icon: SiNodedotjs,
+  },
+  {
+    name: 'Other Skills',
+    description: 'REST APIs, GraphQL, WebSocket',
+    icon: SiNodedotjs,
+  }
 ];
 
 export default function Home() {
@@ -134,12 +144,12 @@ export default function Home() {
             <h2 className="text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               About Me
             </h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
-              I'm a passionate Full Stack Developer with a strong foundation in both frontend and backend technologies.
-              With expertise in modern web frameworks and a keen eye for design, I create seamless, user-friendly applications
-              that solve real-world problems. My journey in software development is driven by continuous learning and
-              a commitment to writing clean, efficient code.
-            </p>
+            <motion.p 
+              variants={fadeInUp} 
+              className="text-lg text-gray-600 max-w-2xl mx-auto"
+            >
+              I&apos;m a passionate full-stack developer with a keen eye for detail and a love for creating elegant solutions to complex problems.
+            </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -177,7 +187,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {skills.map((skill, index) => (
+            {skills.map((skill) => (
               <motion.div
                 key={skill.name}
                 variants={fadeInUp}
@@ -337,9 +347,9 @@ export default function Home() {
             <h2 className="text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               Let's Connect
             </h2>
-            <p className="text-lg text-gray-600 mb-12">
-              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-            </p>
+            <motion.p variants={fadeInUp} className="text-gray-600">
+              Let&apos;s work together to bring your ideas to life.
+            </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
