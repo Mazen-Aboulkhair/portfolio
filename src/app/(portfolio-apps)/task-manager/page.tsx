@@ -33,7 +33,7 @@ export default function TaskManager() {
         setTasks(data);
         setLoading(false);
       } catch (err) {
-        setError('Error loading tasks. Please try again later.');
+        setError(`Error loading tasks: ${err instanceof Error ? err.message : 'Unknown error'}`);
         setLoading(false);
       }
     };
@@ -53,7 +53,7 @@ export default function TaskManager() {
 
       setTasks(tasks.filter(task => task._id !== id));
     } catch (err) {
-      setError('Error deleting task. Please try again.');
+      setError(`Error deleting task: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 
@@ -74,7 +74,7 @@ export default function TaskManager() {
       const updatedTask = await response.json();
       setTasks(tasks.map(task => task._id === id ? updatedTask : task));
     } catch (err) {
-      setError('Error updating task. Please try again.');
+      setError(`Error updating task: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 

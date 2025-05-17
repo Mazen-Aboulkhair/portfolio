@@ -4,6 +4,25 @@ import Order from '@/models/Order';
 import Cart from '@/models/Cart';
 import Product from '@/models/Product';
 
+interface OrderQuery {
+  user: string;
+  status?: string;
+}
+
+interface OrderUpdate {
+  status?: string;
+  paymentStatus?: string;
+  trackingNumber?: string;
+}
+
+interface ProductDocument {
+  _id: string;
+  name: string;
+  price: number;
+  discount?: number;
+  stock: number;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -22,7 +41,7 @@ export async function GET(request: NextRequest) {
     await connectToDatabase();
     
     // Build query
-    const query: any = { user };
+    const query: OrderQuery = { user };
     if (status) {
       query.status = status;
     }
@@ -85,7 +104,7 @@ export async function POST(request: NextRequest) {
     const orderItems = [];
 
     for (const item of cart.items) {
-      const product = item.product as any;
+      const product = item.product as ProductDocument;
       
       if (product.stock < item.quantity) {
         return NextResponse.json(
@@ -162,7 +181,7 @@ export async function PUT(request: NextRequest) {
       .reduce((obj, key) => {
         obj[key] = updates[key];
         return obj;
-      }, {} as any);
+      }, {} as OrderUpdate);
 
     if (Object.keys(filteredUpdates).length === 0) {
       return NextResponse.json(

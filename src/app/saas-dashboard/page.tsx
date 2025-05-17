@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { FaUsers, FaChartLine, FaMoneyBillWave, FaUserPlus, FaDownload } from 'react-icons/fa';
 import {
@@ -75,37 +75,41 @@ export default function SaaSDashboard() {
   const [period, setPeriod] = useState('7d');
   const [seeding, setSeeding] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const [usersRes, analyticsRes] = await Promise.all([
+      setError(null);
+
+      const [analyticsRes, usersRes, summaryRes] = await Promise.all([
+        fetch(`/api/saas/analytics?period=${period}`),
         fetch('/api/saas/users'),
-        fetch(`/api/saas/analytics?period=${period}`)
+        fetch(`/api/saas/summary?period=${period}`)
       ]);
 
-      if (!usersRes.ok || !analyticsRes.ok) {
-        throw new Error('Failed to fetch data');
+      if (!analyticsRes.ok || !usersRes.ok || !summaryRes.ok) {
+        throw new Error('Failed to fetch dashboard data');
       }
 
-      const [usersData, analyticsData] = await Promise.all([
+      const [analyticsData, usersData, summaryData] = await Promise.all([
+        analyticsRes.json(),
         usersRes.json(),
-        analyticsRes.json()
+        summaryRes.json()
       ]);
 
+      setAnalytics(analyticsData);
       setUsers(usersData);
-      setAnalytics(analyticsData.analytics);
-      setSummary(analyticsData.summary);
+      setSummary(summaryData);
     } catch (err) {
-      setError('Error loading dashboard data');
+      setError('Failed to load dashboard data');
       console.error(err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
 
   useEffect(() => {
     fetchData();
-  }, [period]);
+  }, [period, fetchData]);
 
   const handleSeedData = async () => {
     try {

@@ -113,12 +113,12 @@ export default function Blog() {
           
           <div className="space-y-3">
             <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-              <p className="text-gray-800">New comment on "Getting Started with Next.js"</p>
+              <p className="text-gray-800">New comment on &quot;Getting Started with Next.js&quot;</p>
               <p className="text-sm text-gray-600 mt-1">2 hours ago</p>
             </div>
             
             <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-              <p className="text-gray-800">Post "Authentication in Next.js with NextAuth.js" published</p>
+              <p className="text-gray-800">Post &quot;Authentication in Next.js with NextAuth.js&quot; published</p>
               <p className="text-sm text-gray-600 mt-1">1 day ago</p>
             </div>
             

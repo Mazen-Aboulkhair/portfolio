@@ -86,7 +86,7 @@ function generateAnalyticsData() {
   return analytics;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     await connectToDatabase();
 

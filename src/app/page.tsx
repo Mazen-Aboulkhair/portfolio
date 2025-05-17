@@ -4,22 +4,9 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaLinkedin, FaEnvelope } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiReact, SiNodedotjs, SiMongodb, SiTailwindcss } from 'react-icons/si';
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+import { FaEnvelope, FaLinkedin } from 'react-icons/fa';
+import { SiReact, SiNodedotjs, SiMongodb, SiTypescript, SiJavascript, SiTailwindcss } from 'react-icons/si';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const skills = [
   {
@@ -345,7 +332,7 @@ export default function Home() {
             className="max-w-4xl mx-auto text-center"
           >
             <h2 className="text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              Let's Connect
+              Let&apos;s Connect
             </h2>
             <motion.p variants={fadeInUp} className="text-gray-600">
               Let&apos;s work together to bring your ideas to life.

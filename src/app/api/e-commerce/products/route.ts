@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import Product from '@/models/Product';
 
+interface ProductQuery {
+  category?: string;
+  featured?: boolean;
+  $text?: { $search: string };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -16,7 +22,7 @@ export async function GET(request: NextRequest) {
     await connectToDatabase();
 
     // Build query
-    const query: any = {};
+    const query: ProductQuery = {};
     if (category) query.category = category;
     if (featured === 'true') query.featured = true;
     if (search) {

@@ -75,9 +75,6 @@ export default function ECommerce() {
   const [cart, setCart] = useState<Cart>({ items: [], totalAmount: 0 });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'name'>('name');
-  const [showFilters, setShowFilters] = useState(false);
   const [seeding, setSeeding] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [expandedFilters, setExpandedFilters] = useState<Record<FilterSection, boolean>>({
