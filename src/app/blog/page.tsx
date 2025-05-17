@@ -123,7 +123,7 @@ export default function Blog() {
             </div>
             
             <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-              <p className="text-gray-800">New category "Security" created</p>
+              <p className="text-gray-800">New category &quot;Security&quot; created</p>
               <p className="text-sm text-gray-600 mt-1">1 day ago</p>
             </div>
           </div>

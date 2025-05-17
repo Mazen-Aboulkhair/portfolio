@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaEnvelope, FaLinkedin } from 'react-icons/fa';
-import { SiReact, SiNodedotjs, SiMongodb, SiTypescript, SiJavascript, SiTailwindcss } from 'react-icons/si';
+import { SiReact, SiNodedotjs, SiMongodb } from 'react-icons/si';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 
 const skills = [

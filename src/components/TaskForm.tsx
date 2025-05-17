@@ -56,7 +56,7 @@ const TaskForm = ({ taskId, isEditMode = false }: TaskFormProps) => {
           
           setLoading(false);
         } catch (err) {
-          setError('Error loading task. Please try again.');
+          setError(`Error loading task: ${err instanceof Error ? err.message : 'Unknown error'}`);
           setLoading(false);
         }
       };
@@ -96,7 +96,7 @@ const TaskForm = ({ taskId, isEditMode = false }: TaskFormProps) => {
       
       router.push('/task-manager');
     } catch (err) {
-      setError(`Error ${isEditMode ? 'updating' : 'creating'} task. Please try again.`);
+      setError(`Error creating task: ${err instanceof Error ? err.message : 'Unknown error'}`);
       setLoading(false);
     }
   };
