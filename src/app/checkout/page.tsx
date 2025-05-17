@@ -109,20 +109,14 @@ export default function Checkout() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user: userId,
-          items: cart.items,
           shippingAddress: {
-            fullName: formData.fullName,
-            address: formData.address,
+            street: formData.address,
             city: formData.city,
             state: formData.state,
             zipCode: formData.zipCode,
             country: formData.country
           },
-          paymentMethod: {
-            type: 'card',
-            cardNumber: formData.cardNumber.slice(-4),
-            cardName: formData.cardName
-          },
+          paymentMethod: 'credit_card',
           totalAmount: cart.totalAmount
         })
       });
