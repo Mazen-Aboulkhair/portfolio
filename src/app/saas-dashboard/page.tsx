@@ -75,6 +75,26 @@ export default function SaaSDashboard() {
   const [period, setPeriod] = useState('7d');
   const [seeding, setSeeding] = useState(false);
 
+  // Add auto-seed effect
+  useEffect(() => {
+    const autoSeedIfEmpty = async () => {
+      try {
+        const analyticsRes = await fetch(`/api/saas/analytics?period=${period}`);
+        const usersRes = await fetch('/api/saas/users');
+        
+        // If either endpoint returns empty data, seed the database
+        if (analyticsRes.status === 500 || usersRes.status === 500) {
+          console.log('Database appears empty, seeding...');
+          await handleSeedData();
+        }
+      } catch (err) {
+        console.error('Error checking database status:', err);
+      }
+    };
+
+    autoSeedIfEmpty();
+  }, []); // Run once on mount
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
